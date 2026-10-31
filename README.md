@@ -68,15 +68,13 @@ landlawsug/
 │   ├── sources.md          Where the legal text comes from, and how to cite it
 │   └── decisions/          Architecture Decision Records (why we chose X)
 ├── scripts/                Helper scripts to load the data
-├── docker-compose.yml      Reproducible Neo4j setup for every team member
-└── CONTRIBUTING.md         How the team works together
+└── docker-compose.yml      Reproducible Neo4j setup for every team member
 ```
 
 ## Documentation
 
 - [Data model](docs/data-model.md) — the schema to follow
 - [Sources](docs/sources.md) — authoritative sources and citation rules
-- [Contributing](CONTRIBUTING.md) — branching, pull requests and style rules
 - [Decision records](docs/decisions/) — design decisions and their reasons
 
 
