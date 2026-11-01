@@ -16,17 +16,28 @@ This makes it possible to answer questions like:
 
 ## Scope
 
-| Legislation | Type |
-|---|---|
-| Constitution of the Republic of Uganda, 1995 — Chapter 15 (Land and Environment) | Constitution |
-| Land Act (and amendments 2004, 2010) | Act |
-| Registration of Titles Act | Act |
-| Land Acquisition Act | Act |
-| Mortgage Act, 2009 | Act |
-| Physical Planning Act, 2010 | Act |
-| Condominium Property Act | Act |
-| Survey Act | Act |
-| Uganda Land Commission Act | Act |
+### Core legislation
+
+The four laws most directly about land ownership and rights:
+
+| Legislation | Coverage | Status |
+|---|---|---|
+| Constitution of the Republic of Uganda, 1995 | Chapter 15 (Land and environment) and Article 26 (Protection from deprivation of property) | ✅ Done |
+| Land Act (Chapter 236) | All parts and sections, plus its amending Acts (2001, 2004, 2010, 2023) | ✅ Done |
+| Registration of Titles Act | To be decided | ⏳ Planned |
+| Land Acquisition Act | To be decided | ⏳ Planned |
+
+### Possible later additions
+
+Related laws that may be added if time allows:
+
+- Mortgage Act
+- Physical Planning Act
+- Condominium Property Act
+- Survey Act
+- Uganda Land Commission Act
+
+Titles and chapter numbers will be confirmed from ULII when each law is added.
 
 **Data source:** all data comes from the [Uganda Legal Information Institute (ULII)](https://ulii.org/) only.
 

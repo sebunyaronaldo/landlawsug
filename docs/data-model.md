@@ -54,15 +54,20 @@ A law, constitution or policy document.
 | `title` | String | ✅ | Full official title |
 | `shortTitle` | String | | Common short name |
 | `type` | String | ✅ | `Constitution` \| `Act` \| `AmendmentAct` \| `StatutoryInstrument` \| `Policy` |
+| `actNumber` | String | | As enacted, e.g. `Act 16 of 1998` |
 | `yearEnacted` | Integer | ✅ | Year first enacted |
-| `chapter` | String | | Chapter number in the Revised Laws of Uganda, e.g. `Cap. 227` |
-| `chapterEdition` | String | | Edition the chapter number refers to, e.g. `2000 Revised Edition` |
+| `commencementDate` | Date | | Date the law came into force |
+| `chapter` | String | | Chapter number in the Revised Laws of Uganda, e.g. `Cap. 236` |
+| `chapterEdition` | String | | Edition the chapter number refers to, e.g. `2023 Revised Edition` |
+| `formerChapter` | String | | Earlier chapter number, e.g. `Cap. 227 (2000 Revised Edition)` |
+| `longTitle` | String | | The Act's long title, as printed |
 | `status` | String | ✅ | `InForce` \| `Repealed` \| `PartiallyInForce` |
 | `sourceUrl` | String | ✅ | Link to the text on ulii.org (see [sources.md](sources.md)) |
 | `sourceVersion` | String | ✅ | Version / "as at" date of the ULII text used |
 
 ### `Part`
-A major division of a piece of legislation.
+A major division of a piece of legislation. A chapter of the Constitution is also a `Part`,
+with id `constitution-1995/chapter-<number>`, e.g. `constitution-1995/chapter-15`.
 
 | Property | Type | Required | Description |
 |---|---|---|---|
@@ -79,6 +84,7 @@ A section of an Act or an article of the Constitution. Carries an extra label
 | `id` | String | ✅ | `<legislation-id>/s<number>` or `/art<number>`, e.g. `land-act/s29`, `constitution-1995/art237` |
 | `number` | String | ✅ | As printed, e.g. `29`, `237` |
 | `title` | String | ✅ | Marginal note / heading |
+| `subheading` | String | | Heading grouping sections within a part, e.g. `Uganda Land Commission` (Land Act Part IV) |
 | `summary` | String | | Plain-language summary written by the team (not the official text) |
 | `sourceUrl` | String | | Deep link to the provision on ulii.org, if available |
 
@@ -89,7 +95,7 @@ A body established, empowered or regulated by the legislation.
 |---|---|---|---|
 | `id` | String | ✅ | e.g. `uganda-land-commission` |
 | `name` | String | ✅ | Official name |
-| `level` | String | ✅ | `National` \| `District` \| `SubCounty` \| `Parish` |
+| `level` | String | ✅ | `National` \| `District` \| `SubCounty` \| `Parish` \| `Community` |
 | `description` | String | | Role in one or two sentences |
 
 ### `TenureType`
@@ -122,7 +128,8 @@ A defined legal term or idea.
 | `REFERENCES` | `Provision` → `Provision` | | Cross-reference in the text |
 | `ESTABLISHES` | `Provision` → `Institution` | | Provision creates the institution |
 | `EMPOWERS` | `Provision` → `Institution` | `power` (String) | Provision gives the institution a function/power |
-| `ACCOUNTABLE_TO` | `Institution` → `Institution` | | Reporting / supervisory line |
+| `ACCOUNTABLE_TO` | `Institution` → `Institution` | `source` (provision id) | Reporting / supervisory line |
+| `APPEALS_TO` | `Institution` → `Institution` | `source` (provision id) | Decisions of the source can be appealed to the target |
 | `RECOGNISES` | `Provision` → `TenureType` | | Provision recognises the tenure |
 | `DEFINES` | `Provision` → `LegalConcept` | | Provision defines or governs the concept |
 
