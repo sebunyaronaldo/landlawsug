@@ -36,12 +36,27 @@ Granularity: **Legislation → Part → Provision (section / article)**. See [do
 
 **Prerequisites:** [Docker Desktop] and Git.
 
-```bash
-git clone <repo-url>
-cd landlawsug
-cp .env.example .env          # then set your own password in .env
-docker compose up -d          # starts Neo4j
-```
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/sebunyaronaldo/landlawsug.git
+   cd landlawsug
+   ```
+
+2. Create a file named `.env` in the project folder containing this one line, with your own
+   password (at least 8 characters):
+
+   ```
+   NEO4J_PASSWORD=your-own-password
+   ```
+
+   `.env` is ignored by git, so your password is never uploaded. Each team member creates their own.
+
+3. Start Neo4j:
+
+   ```bash
+   docker compose up -d
+   ```
 
 Open the Neo4j Browser at <http://localhost:7474> and log in with `neo4j` / the password from `.env`.
 
