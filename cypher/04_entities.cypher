@@ -22,7 +22,9 @@ UNWIND [
   {id: 'communal-land-association', name: 'Communal Land Association', level: 'Community',
    description: 'May be formed by any group of persons for communal ownership and management of land (s.15).'},
   {id: 'registrar-of-titles', name: 'Registrar of Titles', level: 'National',
-   description: 'Appointed under the Registration of Titles Act; keeps the public register of communal land associations and supervises them (s.15).'},
+   description: 'Appointed under the Registration of Titles Act (s.3) to run the Office of Titles; keeps the Register Book (RTA s.37). Under the Land Act, also registers and supervises communal land associations (s.15).'},
+  {id: 'office-of-titles', name: 'Office of Titles', level: 'National',
+   description: 'The office in the charge and control of the Registrar of Titles (RTA s.3); its seal is inscribed "Office of Titles, Uganda" (RTA s.5).'},
   {id: 'chief-registrar-high-court', name: 'Chief Registrar of the High Court', level: 'National',
    description: 'Exercises general supervision over district land tribunals (s.83).'},
   {id: 'high-court', name: 'High Court', level: 'National',
@@ -64,7 +66,18 @@ UNWIND [
   {id: 'family-land', name: 'Family land',
    definition: 'Land that may not be sold, mortgaged, leased, given away or otherwise transacted without the prior consent of the owner\'s spouse (s.40).'},
   {id: 'compulsory-acquisition', name: 'Compulsory acquisition',
-   definition: 'Taking a person\'s property without consent. Allowed only for public use or interests such as defence, public safety or public health, under a law that provides prompt, fair and adequate compensation in advance and a right of access to court (Constitution art. 26(2)).'}
+   definition: 'Taking a person\'s property without consent. Allowed only for public use or interests such as defence, public safety or public health, under a law that provides prompt, fair and adequate compensation in advance and a right of access to court (Constitution art. 26(2)).'},
+  // --- Registration of Titles Act ---
+  {id: 'certificate-of-title', name: 'Certificate of title',
+   definition: 'A certificate issued by the Registrar under the Registration of Titles Act, made in duplicate: one registered in the Register Book, the other given to the owner (RTA s.1, s.38). It is conclusive evidence of the owner\'s title (RTA s.59).'},
+  {id: 'register-book', name: 'Register Book',
+   definition: 'The book kept by the Registrar in which certificates of title are registered and all dealings affecting the land are entered in order of priority (RTA s.37).'},
+  {id: 'caveat', name: 'Caveat',
+   definition: 'A notice lodged with the Registrar by a person claiming an interest in land, stopping registration of dealings affecting that interest until the person has been notified (RTA s.123).'},
+  {id: 'title-by-possession', name: 'Title by possession',
+   definition: 'Ownership claimed through possession of registered land; the claimant may apply to the Registrar for an order vesting the land in him or her (RTA s.77).'},
+  {id: 'lease', name: 'Lease',
+   definition: 'The owner of freehold or mailo land under the Registration of Titles Act may lease it for more than three years by signing a lease in the prescribed form; a lease of mortgaged land needs the mortgagee\'s written consent (RTA s.100).'}
 ] AS row
 MERGE (c:LegalConcept {id: row.id})
 SET c.name = row.name, c.definition = row.definition;

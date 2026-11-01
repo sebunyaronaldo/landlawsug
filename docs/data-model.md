@@ -125,7 +125,7 @@ A defined legal term or idea.
 | `AMENDS` | `Legislation` \| `Provision` → `Legislation` \| `Provision` | `year` (Integer), `note` (String) | Source amends target |
 | `REPEALS` | `Legislation` \| `Provision` → `Legislation` \| `Provision` | `year` (Integer) | Source repeals target |
 | `IMPLEMENTS` | `Legislation` \| `Provision` → `Provision` | | Gives effect to a constitutional provision |
-| `REFERENCES` | `Provision` → `Provision` | | Cross-reference in the text |
+| `REFERENCES` | `Provision` → `Provision` \| `Legislation` | | Cross-reference in the text; targets the whole `Legislation` when the citing text names an Act but no section |
 | `ESTABLISHES` | `Provision` → `Institution` | | Provision creates the institution |
 | `EMPOWERS` | `Provision` → `Institution` | `power` (String) | Provision gives the institution a function/power |
 | `ACCOUNTABLE_TO` | `Institution` → `Institution` | `source` (provision id) | Reporting / supervisory line |
