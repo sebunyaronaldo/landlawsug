@@ -146,3 +146,67 @@ UNWIND [
 ] AS row
 MATCH (a:Provision {id: row.from}), (b:Provision {id: row.to})
 MERGE (a)-[:REFERENCES]->(b);
+
+// ===========================================================================
+// REGISTRATION OF TITLES ACT (Chapter 240)
+// ===========================================================================
+
+// --- ESTABLISHES — s.3 "A Registrar of Titles shall be appointed to have the charge and control of the Office of Titles"
+UNWIND ['registrar-of-titles', 'office-of-titles'] AS iid
+MATCH (s:Provision {id: 'registration-of-titles-act/s3'}), (i:Institution {id: iid})
+MERGE (s)-[:ESTABLISHES]->(i);
+
+// --- EMPOWERS --------------------------------------------------------------
+UNWIND [
+  {s: 'registration-of-titles-act/s37',  power: 'Keep the Register Book and register certificates of title and dealings affecting land'},
+  {s: 'registration-of-titles-act/s77',  power: 'Receive applications for title by possession'},
+  {s: 'registration-of-titles-act/s123', power: 'Receive caveats forbidding registration of dealings'}
+] AS row
+MATCH (s:Provision {id: row.s}), (i:Institution {id: 'registrar-of-titles'})
+MERGE (s)-[r:EMPOWERS]->(i)
+SET r.power = row.power;
+
+// --- ACCOUNTABLE_TO — the Office of Titles is in the charge and control of the Registrar (s.3)
+MATCH (a:Institution {id: 'office-of-titles'}), (b:Institution {id: 'registrar-of-titles'})
+MERGE (a)-[r:ACCOUNTABLE_TO]->(b)
+SET r.source = 'registration-of-titles-act/s3';
+
+// --- DEFINES ---------------------------------------------------------------
+UNWIND [
+  {s: 'registration-of-titles-act/s37',  c: 'register-book'},
+  {s: 'registration-of-titles-act/s38',  c: 'certificate-of-title'},
+  {s: 'registration-of-titles-act/s59',  c: 'certificate-of-title'},
+  {s: 'registration-of-titles-act/s77',  c: 'title-by-possession'},
+  {s: 'registration-of-titles-act/s100', c: 'lease'},
+  {s: 'registration-of-titles-act/s123', c: 'caveat'}
+] AS row
+MATCH (s:Provision {id: row.s}), (c:LegalConcept {id: row.c})
+MERGE (s)-[:DEFINES]->(c);
+
+// --- RECOGNISES — s.100: leases of freehold or mailo land under the Act
+UNWIND ['freehold', 'mailo', 'leasehold'] AS tid
+MATCH (s:Provision {id: 'registration-of-titles-act/s100'}), (t:TenureType {id: tid})
+MERGE (s)-[:RECOGNISES]->(t);
+
+// ===========================================================================
+// LINKS BETWEEN LAWS — Land Act citing the Registration of Titles Act
+// ===========================================================================
+
+// Section-to-section
+UNWIND [
+  {from: 'land-act/s14', to: 'registration-of-titles-act/s39'},   // "in accordance with section 39 of the Registration of Titles Act"
+  {from: 'land-act/s40', to: 'registration-of-titles-act/s124'}   // "Notwithstanding section 124(2) of the Registration of Titles Act"
+] AS row
+MATCH (a:Provision {id: row.from}), (b:Provision {id: row.to})
+MERGE (a)-[:REFERENCES]->(b);
+
+// Section-to-whole-Act (no section number given in the citing text)
+UNWIND [
+  'land-act/s1',   // "alienated", "registrable interest", "Registrar of Titles" definitions
+  'land-act/s13',  // "a limited certificate under the Registration of Titles Act"
+  'land-act/s41',  // (2) non-citizen leases of five years or more registered under the Act
+  'land-act/s74',  // public works rights, "whether or not ... registered under the Registration of Titles Act"
+  'land-act/s88'   // "Subject to the Registration of Titles Act, the Registrar of Titles shall ..."
+] AS sid
+MATCH (a:Provision {id: sid}), (b:Legislation {id: 'registration-of-titles-act'})
+MERGE (a)-[:REFERENCES]->(b);

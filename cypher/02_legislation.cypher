@@ -3,6 +3,7 @@
 // Sources (ULII PDFs, legislation as at 31 December 2023):
 //   Land Act (Chapter 236)                    — FRBR URI /akn/ug/act/1998/16/eng@2023-12-31
 //   Constitution of the Republic of Uganda    — FRBR URI /akn/ug/act/statute/1995/constitution/eng@2023-12-31
+//   Registration of Titles Act (Chapter 240)  — FRBR URI /akn/ug/act/ord/1922/22/eng@2023-12-31
 
 // ---------------------------------------------------------------------------
 // Constitution — facts from page 1 and the opening notes.
@@ -56,3 +57,39 @@ WITH a, row
 MATCH (l:Legislation {id: 'land-act'})
 MERGE (a)-[r:AMENDS]->(l)
 SET r.effectiveDate = date(row.effective);
+
+// ---------------------------------------------------------------------------
+// Registration of Titles Act — facts from page 1 and the heading of the Act
+// ---------------------------------------------------------------------------
+MERGE (r:Legislation {id: 'registration-of-titles-act'})
+SET r.title            = 'Registration of Titles Act',
+    r.type             = 'Act',
+    r.actNumber        = 'Ordinance 22 of 1922',
+    r.yearEnacted      = 1922,
+    r.commencementDate = date('1924-05-01'),
+    r.chapter          = 'Cap. 240',
+    r.chapterEdition   = '2023 Revised Edition',
+    r.formerChapter    = 'Cap. 230 (2000 Revised Edition)',
+    r.longTitle        = 'An Act to provide for the transfer of land and the registration of titles.',
+    r.status           = 'InForce',
+    r.sourceUrl        = 'https://ulii.org/en/akn/ug/act/ord/1922/22/eng@2023-12-31',
+    r.sourceVersion    = '2023-12-31';
+
+// Mortgage Act — only what the RTA amendment notes say about it.
+// yearEnacted is not stated there, so it is left unset until the Mortgage Act itself is added.
+MERGE (m:Legislation {id: 'mortgage-act'})
+SET m.title          = 'Mortgage Act',
+    m.type           = 'Act',
+    m.chapter        = 'Cap. 239',
+    m.chapterEdition = '2023 Revised Edition',
+    m.sourceUrl      = 'https://ulii.org/en/akn/ug/act/ord/1922/22/eng@2023-12-31',
+    m.sourceVersion  = '2023-12-31';
+
+// Amendments recorded in the RTA notes
+UNWIND [
+  {from: 'mortgage-act',                          effective: '2011-09-02'},
+  {from: 'law-revision-misc-amendments-act-2023', effective: '2023-07-28'}
+] AS row
+MATCH (a:Legislation {id: row.from}), (r:Legislation {id: 'registration-of-titles-act'})
+MERGE (a)-[x:AMENDS]->(r)
+SET x.effectiveDate = date(row.effective);

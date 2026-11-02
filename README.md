@@ -24,7 +24,7 @@ The four laws most directly about land ownership and rights:
 |---|---|---|
 | Constitution of the Republic of Uganda, 1995 | Chapter 15 (Land and environment) and Article 26 (Protection from deprivation of property) | ✅ Done |
 | Land Act (Chapter 236) | All parts and sections, plus its amending Acts (2001, 2004, 2010, 2023) | ✅ Done |
-| Registration of Titles Act | To be decided | ⏳ Planned |
+| Registration of Titles Act (Chapter 240) | All parts and sections, plus its amending Acts (Mortgage Act, 2023 Law Revision Act) | ✅ Done |
 | Land Acquisition Act | To be decided | ⏳ Planned |
 
 ### Possible later additions
