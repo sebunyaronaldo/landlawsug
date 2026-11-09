@@ -1,6 +1,7 @@
 // 04_entities.cypher
 // Institutions, tenure types and legal concepts.
-// Source: ULII PDF — Land Act (Chapter 236), version as at 31 December 2023.
+// Sources: ULII PDFs, version as at 31 December 2023 — Land Act (Chapter 236), Constitution,
+// Registration of Titles Act (Chapter 240, "RTA"), Land Acquisition Act (Chapter 235, "LAA").
 // Descriptions and definitions are the team's own plain-language summaries of the cited sections.
 
 // ---------------------------------------------------------------------------
@@ -28,7 +29,18 @@ UNWIND [
   {id: 'chief-registrar-high-court', name: 'Chief Registrar of the High Court', level: 'National',
    description: 'Exercises general supervision over district land tribunals (s.83).'},
   {id: 'high-court', name: 'High Court', level: 'National',
-   description: 'Hears appeals from decisions of district land tribunals (s.84).'}
+   description: 'Hears appeals from decisions of district land tribunals (s.84).'},
+  // --- Land Acquisition Act ---
+  {id: 'minister-responsible-for-lands', name: 'Minister responsible for lands', level: 'National',
+   description: 'Under the Land Acquisition Act, declares land needed for a public purpose (LAA s.3), may revoke the declaration (LAA s.8) and makes regulations on compensation (LAA s.20).'},
+  {id: 'attorney-general', name: 'Attorney General', level: 'National',
+   description: 'Refers disputes about compensation under the Land Acquisition Act to court for decision (LAA s.2, s.8, s.10, s.11, s.14).'},
+  {id: 'assessment-officer', name: 'Assessment Officer', level: 'National',
+   description: 'A public officer or other person appointed by the Minister (LAA s.1); holds the inquiry into claims, makes the compensation award and takes possession of the land (LAA s.6, s.7).'},
+  {id: 'appointed-officer', name: 'Appointed Officer', level: 'National',
+   description: 'Appointed by the Minister to arrange the temporary occupation and use of land for a public purpose, for up to three years (LAA s.10).'},
+  {id: 'magistrates-court', name: 'Magistrate\'s Court', level: 'District',
+   description: 'Decides compulsory-acquisition disputes referred by the Attorney General for the area where the land is (LAA s.14) and enforces the right to take possession (LAA s.15).'}
 ] AS row
 MERGE (i:Institution {id: row.id})
 SET i.name = row.name, i.level = row.level, i.description = row.description;
@@ -77,7 +89,16 @@ UNWIND [
   {id: 'title-by-possession', name: 'Title by possession',
    definition: 'Ownership claimed through possession of registered land; the claimant may apply to the Registrar for an order vesting the land in him or her (RTA s.77).'},
   {id: 'lease', name: 'Lease',
-   definition: 'The owner of freehold or mailo land under the Registration of Titles Act may lease it for more than three years by signing a lease in the prescribed form; a lease of mortgaged land needs the mortgagee\'s written consent (RTA s.100).'}
+   definition: 'The owner of freehold or mailo land under the Registration of Titles Act may lease it for more than three years by signing a lease in the prescribed form; a lease of mortgaged land needs the mortgagee\'s written consent (RTA s.100).'},
+  // --- Land Acquisition Act ---
+  {id: 'public-purpose-declaration', name: 'Declaration (public purpose)',
+   definition: 'A statutory instrument by which the Minister declares that land is required by the Government for a public purpose, stating its location and approximate area (LAA s.3). It can be revoked until possession is taken (LAA s.8).'},
+  {id: 'person-having-an-interest', name: 'Person having an interest',
+   definition: 'Anyone claiming an interest in the compensation payable for land under the Land Acquisition Act, including anyone with an interest in an easement affecting the land (LAA s.1).'},
+  {id: 'compensation-award', name: 'Compensation award',
+   definition: 'The assessment officer\'s decision after an inquiry, stating the true area of the land, the compensation and how it is shared among those with an interest (LAA s.6). It can be appealed to the High Court within sixty days (LAA s.13).'},
+  {id: 'temporary-occupation', name: 'Temporary occupation',
+   definition: 'Government occupation and use of waste or arable land for a public purpose for up to three years, with compensation agreed in writing (LAA s.10).'}
 ] AS row
 MERGE (c:LegalConcept {id: row.id})
 SET c.name = row.name, c.definition = row.definition;

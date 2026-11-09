@@ -93,3 +93,26 @@ UNWIND [
 MATCH (a:Legislation {id: row.from}), (r:Legislation {id: 'registration-of-titles-act'})
 MERGE (a)-[x:AMENDS]->(r)
 SET x.effectiveDate = date(row.effective);
+
+// ---------------------------------------------------------------------------
+// Land Acquisition Act — facts from page 1 and the heading of the Act (page 3)
+//   FRBR URI /akn/ug/act/1965/14/eng@2023-12-31
+// ---------------------------------------------------------------------------
+MERGE (q:Legislation {id: 'land-acquisition-act'})
+SET q.title            = 'Land Acquisition Act',
+    q.type             = 'Act',
+    q.actNumber        = 'Act 14 of 1965',
+    q.yearEnacted      = 1965,
+    q.commencementDate = date('1965-07-02'),
+    q.chapter          = 'Cap. 235',
+    q.chapterEdition   = '2023 Revised Edition',
+    q.formerChapter    = 'Cap. 226 (2000 Revised Edition)',
+    q.longTitle        = 'An Act to provide for the compulsory acquisition of land for public purposes and for related matters.',
+    q.status           = 'InForce',
+    q.sourceUrl        = 'https://ulii.org/en/akn/ug/act/1965/14/eng@2023-12-31',
+    q.sourceVersion    = '2023-12-31';
+
+// Amendment recorded in the Land Acquisition Act notes
+MATCH (a:Legislation {id: 'law-revision-misc-amendments-act-2023'}), (q:Legislation {id: 'land-acquisition-act'})
+MERGE (a)-[x:AMENDS]->(q)
+SET x.effectiveDate = date('2023-07-28');
