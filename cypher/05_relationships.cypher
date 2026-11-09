@@ -210,3 +210,89 @@ UNWIND [
 ] AS sid
 MATCH (a:Provision {id: sid}), (b:Legislation {id: 'registration-of-titles-act'})
 MERGE (a)-[:REFERENCES]->(b);
+
+// ===========================================================================
+// LAND ACQUISITION ACT (Chapter 235)
+// ===========================================================================
+
+// --- ESTABLISHES — offices the Minister appoints (same rule as Recorder / Mediator)
+UNWIND [
+  {s: 'land-acquisition-act/s1',  i: 'assessment-officer'},   // "appointed by the Minister to be an assessment officer"
+  {s: 'land-acquisition-act/s10', i: 'appointed-officer'}     // "he or she may appoint a public officer or other person"
+] AS row
+MATCH (s:Provision {id: row.s}), (i:Institution {id: row.i})
+MERGE (s)-[:ESTABLISHES]->(i);
+
+// --- EMPOWERS --------------------------------------------------------------
+UNWIND [
+  {s: 'land-acquisition-act/s3',  i: 'minister-responsible-for-lands', power: 'Declare by statutory instrument that land is required for a public purpose'},
+  {s: 'land-acquisition-act/s8',  i: 'minister-responsible-for-lands', power: 'Revoke a declaration before possession is taken'},
+  {s: 'land-acquisition-act/s10', i: 'minister-responsible-for-lands', power: 'Appoint an officer to procure temporary occupation of land for up to three years'},
+  {s: 'land-acquisition-act/s20', i: 'minister-responsible-for-lands', power: 'Make regulations for the assessment and payment of compensation'},
+  {s: 'land-acquisition-act/s5',  i: 'assessment-officer',             power: 'Publish notice calling for claims to compensation'},
+  {s: 'land-acquisition-act/s6',  i: 'assessment-officer',             power: 'Hold an inquiry into claims and make the compensation award'},
+  {s: 'land-acquisition-act/s7',  i: 'assessment-officer',             power: 'Take possession of the land'},
+  {s: 'land-acquisition-act/s7',  i: 'registrar-of-titles',            power: 'Give effect in the Register Book to the vesting of acquired land'},
+  {s: 'land-acquisition-act/s7',  i: 'uganda-land-commission',         power: 'Acquired land vests in the Commission free from all incumbrances'},
+  {s: 'land-acquisition-act/s10', i: 'appointed-officer',              power: 'Agree compensation and take possession for temporary occupation'},
+  {s: 'land-acquisition-act/s14', i: 'attorney-general',               power: 'Refer compensation disputes to the magistrate\'s court by motion'},
+  {s: 'land-acquisition-act/s14', i: 'magistrates-court',              power: 'Decide references regardless of the value of the subject matter'},
+  {s: 'land-acquisition-act/s15', i: 'magistrates-court',              power: 'Declare and enforce the right to take possession of land'}
+] AS row
+MATCH (s:Provision {id: row.s}), (i:Institution {id: row.i})
+MERGE (s)-[r:EMPOWERS]->(i)
+SET r.power = row.power;
+
+// --- APPEALS_TO ------------------------------------------------------------
+UNWIND [
+  {from: 'assessment-officer', to: 'high-court', source: 'land-acquisition-act/s13'},  // appeal against an award within sixty days
+  {from: 'magistrates-court',  to: 'high-court', source: 'land-acquisition-act/s14'}   // appeal against a decision on a reference
+] AS row
+MATCH (a:Institution {id: row.from}), (b:Institution {id: row.to})
+MERGE (a)-[r:APPEALS_TO]->(b)
+SET r.source = row.source;
+
+// --- DEFINES ---------------------------------------------------------------
+UNWIND [
+  {s: 'land-acquisition-act/s1',  c: 'person-having-an-interest'},
+  {s: 'land-acquisition-act/s3',  c: 'public-purpose-declaration'},
+  {s: 'land-acquisition-act/s3',  c: 'compulsory-acquisition'},
+  {s: 'land-acquisition-act/s7',  c: 'compulsory-acquisition'},
+  {s: 'land-acquisition-act/s6',  c: 'compensation-award'},
+  {s: 'land-acquisition-act/s13', c: 'compensation-award'},
+  {s: 'land-acquisition-act/s10', c: 'temporary-occupation'}
+] AS row
+MATCH (s:Provision {id: row.s}), (c:LegalConcept {id: row.c})
+MERGE (s)-[:DEFINES]->(c);
+
+// --- REFERENCES within the Act ---------------------------------------------
+UNWIND [
+  {from: 1,  to: 3},  {from: 1,  to: 10},   // definitions of "declaration" and "appointed officer"
+  {from: 4,  to: 3},  {from: 5,  to: 4},  {from: 6,  to: 5},
+  {from: 7,  to: 6},  {from: 8,  to: 3},  {from: 8,  to: 7},
+  {from: 9,  to: 6},  {from: 11, to: 10}, {from: 13, to: 6},
+  {from: 17, to: 2}
+] AS row
+MATCH (a:Provision {id: 'land-acquisition-act/s' + row.from}), (b:Provision {id: 'land-acquisition-act/s' + row.to})
+MERGE (a)-[:REFERENCES]->(b);
+
+// --- REFERENCES to the Registration of Titles Act (whole Act) ---------------
+UNWIND [
+  'land-acquisition-act/s1',  // "registered proprietor" and "Register Book" defined by the RTA
+  'land-acquisition-act/s7'   // Registrar acts "notwithstanding any inconsistency with the Registration of Titles Act"
+] AS sid
+MATCH (a:Provision {id: sid}), (b:Legislation {id: 'registration-of-titles-act'})
+MERGE (a)-[:REFERENCES]->(b);
+
+// ===========================================================================
+// LINKS BETWEEN LAWS — compulsory acquisition
+// ===========================================================================
+
+// Land Act s.42(6): "Notwithstanding any provisions to the contrary in the Land Acquisition Act"
+MATCH (a:Provision {id: 'land-act/s42'}), (b:Legislation {id: 'land-acquisition-act'})
+MERGE (a)-[:REFERENCES]->(b);
+
+// Land Act s.43: Government may acquire land "in accordance with Articles 26 and 237(2) of the Constitution"
+UNWIND ['constitution-1995/art26', 'constitution-1995/art237'] AS aid
+MATCH (a:Provision {id: 'land-act/s43'}), (b:Provision {id: aid})
+MERGE (a)-[:REFERENCES]->(b);

@@ -430,3 +430,60 @@ SET s:Section,
     s.subheading = row.sub
 MERGE (p)-[r:HAS_PROVISION]->(s)
 SET r.order = row.n;
+
+// ===========================================================================
+// LAND ACQUISITION ACT (Chapter 235) — ULII version as at 31 December 2023
+// Titles exactly as printed in the table of contents.
+// ===========================================================================
+
+// --- Parts -----------------------------------------------------------------
+MATCH (l:Legislation {id: 'land-acquisition-act'})
+UNWIND [
+  {num: 'I',   order: 1, title: 'Interpretation'},
+  {num: 'II',  order: 2, title: 'Acquisitions, etc.'},
+  {num: 'III', order: 3, title: 'Legal proceedings'},
+  {num: 'IV',  order: 4, title: 'Miscellaneous'}
+] AS row
+MERGE (p:Part {id: 'land-acquisition-act/part-' + toLower(row.num)})
+SET p.number = row.num, p.title = row.title
+MERGE (l)-[r:HAS_PART]->(p)
+SET r.order = row.order;
+
+// --- Sections --------------------------------------------------------------
+UNWIND [
+  // Part I – Interpretation
+  {n: 1,  part: 'I',   title: 'Interpretation'},
+
+  // Part II – Acquisitions, etc.
+  {n: 2,  part: 'II',  title: 'Power to enter on and examine land'},
+  {n: 3,  part: 'II',  title: 'Declaration that land is needed for public purpose'},
+  {n: 4,  part: 'II',  title: 'Land to be marked out, eta'},   // "eta" (for "etc.") kept as printed
+  {n: 5,  part: 'II',  title: 'Notice to persons having an interest'},
+  {n: 6,  part: 'II',  title: 'Inquiry and award'},
+  {n: 7,  part: 'II',  title: 'Taking possession'},
+  {n: 8,  part: 'II',  title: 'Withdrawal from acquisition'},
+  {n: 9,  part: 'II',  title: 'Acquisition of part of house, manufactory or other building'},
+  {n: 10, part: 'II',  title: 'Temporary occupation of waste or arable land for public purpose'},
+  {n: 11, part: 'II',  title: 'End of temporary occupation'},
+  {n: 12, part: 'II',  title: 'Power of Minister where claim for severance is excessive'},
+
+  // Part III – Legal proceedings
+  {n: 13, part: 'III', title: 'Appeals'},
+  {n: 14, part: 'III', title: 'References to court'},
+  {n: 15, part: 'III', title: 'Enforcement of right to possession'},
+  {n: 16, part: 'III', title: 'Rules on procedure, etc.'},
+
+  // Part IV – Miscellaneous
+  {n: 17, part: 'IV',  title: 'Offences and penalties'},
+  {n: 18, part: 'IV',  title: 'Service of notices, etc.'},
+  {n: 19, part: 'IV',  title: 'Saving for acquisition by agreement, etc.'},
+  {n: 20, part: 'IV',  title: 'Regulations'},
+  {n: 21, part: 'IV',  title: 'Power to amend Schedule'}
+] AS row
+MATCH (p:Part {id: 'land-acquisition-act/part-' + toLower(row.part)})
+MERGE (s:Provision {id: 'land-acquisition-act/s' + row.n})
+SET s:Section,
+    s.number = toString(row.n),
+    s.title  = row.title
+MERGE (p)-[r:HAS_PROVISION]->(s)
+SET r.order = row.n;
