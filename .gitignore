@@ -4,3 +4,8 @@
 Thumbs.db
 .vscode/
 .idea/
+node_modules/
+
+# Source PDFs and extracted text stay on your own computer (see docs/sources.md, licence)
+*.pdf
+*.txt

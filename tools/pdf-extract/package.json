@@ -1,0 +1,14 @@
+{
+  "name": "landlawsug-pdf-extract",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Extract text and the table of contents from ULII legislation PDFs",
+  "type": "module",
+  "scripts": {
+    "extract": "node extract.mjs",
+    "toc": "node toc.mjs"
+  },
+  "dependencies": {
+    "pdfjs-dist": "4.10.38"
+  }
+}
