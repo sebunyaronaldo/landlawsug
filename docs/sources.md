@@ -32,7 +32,28 @@ version you used, and record the edition in the `chapterEdition` property.
 - [ ] `sourceVersion` recorded
 - [ ] Summaries written in our own words and accurate
 
+## Licence
+
+ULII's PDFs are published with Laws.Africa under the
+**Creative Commons Attribution-NonCommercial-ShareAlike 4.0** licence (CC BY-NC-SA 4.0),
+as stated on page 1 of each PDF. For this project that means:
+
+- **Credit** ULII and Laws.Africa — every `Legislation` node links to its ULII page.
+- **Non-commercial** use only.
+- **Share-alike** — work derived from the text is shared under the same terms.
+- The PDFs themselves are **not committed** to this repository (`*.pdf` is in `.gitignore`);
+  each team member downloads them from ULII.
+
+## Laws used
+
+| Law | ULII page (version as at 31 December 2023) |
+|---|---|
+| Constitution of the Republic of Uganda, 1995 | <https://ulii.org/en/akn/ug/act/statute/1995/constitution/eng@2023-12-31> |
+| Land Act (Chapter 236) | <https://ulii.org/akn/ug/act/1998/16/eng@2023-12-31> |
+| Registration of Titles Act (Chapter 240) | <https://ulii.org/en/akn/ug/act/ord/1922/22/eng@2023-12-31> |
+| Land Acquisition Act (Chapter 235) | <https://ulii.org/en/akn/ug/act/1965/14/eng@2023-12-31> |
+
 ## Citation format (for reports)
 
-> *Land Act*, Cap. 227 (Laws of Uganda, 2000 Revised Edition), s. 29, available at ULII, https://ulii.org/…
-> *Constitution of the Republic of Uganda*, 1995, art. 237, available at ULII, https://ulii.org/…
+> *Land Act*, Cap. 236 (Laws of Uganda, 2023 Revised Edition), s. 29, available at ULII, https://ulii.org/akn/ug/act/1998/16/eng@2023-12-31
+> *Constitution of the Republic of Uganda*, 1995, art. 237, available at ULII, https://ulii.org/en/akn/ug/act/statute/1995/constitution/eng@2023-12-31
