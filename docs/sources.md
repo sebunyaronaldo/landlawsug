@@ -52,6 +52,7 @@ as stated on page 1 of each PDF. For this project that means:
 | Land Act (Chapter 236) | <https://ulii.org/akn/ug/act/1998/16/eng@2023-12-31> |
 | Registration of Titles Act (Chapter 240) | <https://ulii.org/en/akn/ug/act/ord/1922/22/eng@2023-12-31> |
 | Land Acquisition Act (Chapter 235) | <https://ulii.org/en/akn/ug/act/1965/14/eng@2023-12-31> |
+| Mortgage Act (Chapter 239) | <https://ulii.org/en/akn/ug/act/2009/8/eng@2023-12-31> |
 
 ## Citation format (for reports)
 

@@ -4,6 +4,7 @@
 //   Land Act (Chapter 236)                    — FRBR URI /akn/ug/act/1998/16/eng@2023-12-31
 //   Constitution of the Republic of Uganda    — FRBR URI /akn/ug/act/statute/1995/constitution/eng@2023-12-31
 //   Registration of Titles Act (Chapter 240)  — FRBR URI /akn/ug/act/ord/1922/22/eng@2023-12-31
+//   Mortgage Act (Chapter 239)                — FRBR URI /akn/ug/act/2009/8/eng@2023-12-31
 
 // ---------------------------------------------------------------------------
 // Constitution — facts from page 1 and the opening notes.
@@ -75,15 +76,21 @@ SET r.title            = 'Registration of Titles Act',
     r.sourceUrl        = 'https://ulii.org/en/akn/ug/act/ord/1922/22/eng@2023-12-31',
     r.sourceVersion    = '2023-12-31';
 
-// Mortgage Act — only what the RTA amendment notes say about it.
-// yearEnacted is not stated there, so it is left unset until the Mortgage Act itself is added.
+// Mortgage Act — facts from page 1 and the heading of the Act (page 4).
+// "[Act 8/2009; S.I. 44/2011]": enacted after the 2000 revision, so there is no former chapter.
+// The heading lists no amendments.
 MERGE (m:Legislation {id: 'mortgage-act'})
-SET m.title          = 'Mortgage Act',
-    m.type           = 'Act',
-    m.chapter        = 'Cap. 239',
-    m.chapterEdition = '2023 Revised Edition',
-    m.sourceUrl      = 'https://ulii.org/en/akn/ug/act/ord/1922/22/eng@2023-12-31',
-    m.sourceVersion  = '2023-12-31';
+SET m.title            = 'Mortgage Act',
+    m.type             = 'Act',
+    m.actNumber        = 'Act 8 of 2009',
+    m.yearEnacted      = 2009,
+    m.commencementDate = date('2011-09-02'),   // "Commenced on 2 September 2011 by Mortgage Act (Commencement) Instrument, 2011"
+    m.chapter          = 'Cap. 239',
+    m.chapterEdition   = '2023 Revised Edition',
+    m.longTitle        = 'An Act to provide for the creation of mortgages; to provide for the duties of mortgagors and mortgagees regarding mortgages; to provide for mortgages for matrimonial homes; to make mortgages take effect only as security; to provide for priority, tacking, consolidation and variation of mortgages; to provide for suits by mortgagors, the discharge of mortgages, covenants, conditions implied in every mortgage; to provide for remedies of mortgagors and mortgagees in respect of mortgages; to provide for the power of court in respect of mortgages and for related matters.',
+    m.status           = 'InForce',
+    m.sourceUrl        = 'https://ulii.org/en/akn/ug/act/2009/8/eng@2023-12-31',
+    m.sourceVersion    = '2023-12-31';
 
 // Amendments recorded in the RTA notes
 UNWIND [

@@ -296,3 +296,125 @@ MERGE (a)-[:REFERENCES]->(b);
 UNWIND ['constitution-1995/art26', 'constitution-1995/art237'] AS aid
 MATCH (a:Provision {id: 'land-act/s43'}), (b:Provision {id: aid})
 MERGE (a)-[:REFERENCES]->(b);
+
+// ===========================================================================
+// MORTGAGE ACT (Chapter 239)
+// No institutions are established by this Act; it gives duties to existing ones.
+// "court" (s.1) means any court from a grade I magistrates court upwards, including a
+// land tribunal, so court powers are not linked to one Institution node.
+// ===========================================================================
+
+// --- EMPOWERS --------------------------------------------------------------
+UNWIND [
+  {s: 'mortgage-act/s6',  i: 'mediator',                       power: 'Mediate between mortgagor and mortgagee before a court is asked to act on a mortgage of customary land'},  // 6(2), 6(3) "after using the services of the mediator"
+  {s: 'mortgage-act/s8',  i: 'recorder',                       power: 'Register mortgages of land held under a certificate of customary ownership in the order they are presented'},  // 8(2)
+  {s: 'mortgage-act/s14', i: 'registrar-of-titles',            power: 'Enter releases of mortgages on the certificate of title'},                    // 14(1)
+  {s: 'mortgage-act/s14', i: 'recorder',                       power: 'Enter releases of mortgages on the certificate of customary ownership'},     // 14(1) "Registrar of Titles or recorder as the case may be"
+  {s: 'mortgage-act/s15', i: 'secretary-to-the-treasury',      power: 'Receive mortgage money where the mortgagee cannot be found and hold it in trust in the Consolidated Fund'},  // 15(1), 15(4)
+  {s: 'mortgage-act/s15', i: 'registrar-of-titles',            power: 'Enter a discharge on production of the Treasury receipt'},                   // 15(3)
+  {s: 'mortgage-act/s15', i: 'recorder',                       power: 'Enter a discharge on production of the Treasury receipt'},                   // 15(3)
+  {s: 'mortgage-act/s27', i: 'registrar-of-titles',            power: 'Register the transfer by a mortgagee exercising the power of sale'},          // 27(3), 27(4)
+  {s: 'mortgage-act/s27', i: 'recorder',                       power: 'Register the transfer by a mortgagee exercising the power of sale'},          // 27(3), 27(4)
+  {s: 'mortgage-act/s36', i: 'registrar-of-titles',            power: 'Remove from the title a mortgage whose recovery is barred by the Limitation Act'},  // 36(1)
+  {s: 'mortgage-act/s37', i: 'registrar-of-titles',            power: 'Issue a special certificate of title to the mortgagor'},                     // 37(3)
+  {s: 'mortgage-act/s5',  i: 'minister-responsible-for-lands', power: 'Authorise further classes of independent person by statutory instrument'},  // 5(2); "Minister" = Minister responsible for lands (s.1)
+  {s: 'mortgage-act/s40', i: 'minister-responsible-for-lands', power: 'Make regulations under the Mortgage Act in consultation with the Bank of Uganda'},  // 40(1)
+  {s: 'mortgage-act/s41', i: 'minister-responsible-for-lands', power: 'Amend Schedule 1 (currency point) by statutory instrument with Cabinet approval'}   // s.41
+] AS row
+MATCH (s:Provision {id: row.s}), (i:Institution {id: row.i})
+MERGE (s)-[r:EMPOWERS]->(i)
+SET r.power = row.power;
+
+// --- RECOGNISES ------------------------------------------------------------
+// s.1 "land tenure" includes customary, freehold, leasehold and mailo; s.2(1) land under "any form of land tenure" may be mortgaged
+UNWIND ['mortgage-act/s1', 'mortgage-act/s2'] AS sid
+MATCH (s:Provision {id: sid}), (t:TenureType)
+WHERE t.id IN ['customary', 'freehold', 'mailo', 'leasehold']
+MERGE (s)-[:RECOGNISES]->(t);
+
+// s.6 mortgages on customary land
+MATCH (s:Provision {id: 'mortgage-act/s6'}), (t:TenureType {id: 'customary'})
+MERGE (s)-[:RECOGNISES]->(t);
+
+// --- DEFINES ---------------------------------------------------------------
+UNWIND [
+  {s: 'mortgage-act/s1',  c: 'mortgage'},
+  {s: 'mortgage-act/s2',  c: 'mortgage'},
+  {s: 'mortgage-act/s7',  c: 'mortgage'},                         // security only
+  {s: 'mortgage-act/s1',  c: 'informal-mortgage'},
+  {s: 'mortgage-act/s2',  c: 'informal-mortgage'},                // 2(8)(a)
+  {s: 'mortgage-act/s1',  c: 'matrimonial-home'},
+  {s: 'mortgage-act/s4',  c: 'matrimonial-home'},
+  {s: 'mortgage-act/s5',  c: 'matrimonial-home'},
+  {s: 'mortgage-act/s6',  c: 'mortgage-on-customary-land'},
+  {s: 'mortgage-act/s8',  c: 'priority-of-mortgages'},
+  {s: 'mortgage-act/s9',  c: 'tacking'},
+  {s: 'mortgage-act/s10', c: 'consolidation'},                    // 10(4) defines "consolidation"
+  {s: 'mortgage-act/s13', c: 'right-to-discharge'},
+  {s: 'mortgage-act/s31', c: 'right-to-discharge'},
+  {s: 'mortgage-act/s17', c: 'implied-covenants-by-mortgagor'},
+  {s: 'mortgage-act/s18', c: 'notice-of-default'},
+  {s: 'mortgage-act/s19', c: 'mortgagee-remedies'},
+  {s: 'mortgage-act/s1',  c: 'receiver'},
+  {s: 'mortgage-act/s21', c: 'receiver'},
+  {s: 'mortgage-act/s25', c: 'power-of-sale'},
+  {s: 'mortgage-act/s26', c: 'power-of-sale'},
+  {s: 'mortgage-act/s27', c: 'power-of-sale'},
+  {s: 'mortgage-act/s32', c: 'relief-for-mortgagor'},
+  {s: 'mortgage-act/s33', c: 'relief-for-mortgagor'}
+] AS row
+MATCH (s:Provision {id: row.s}), (c:LegalConcept {id: row.c})
+MERGE (s)-[:DEFINES]->(c);
+
+// --- REFERENCES within the Act ---------------------------------------------
+UNWIND [
+  {from: 1,  to: 2},                                    // "lien by deposit of documents" ... section 2(8)(b)
+  {from: 5,  to: 4},                                    // "consent of a spouse referred to in section 4"
+  {from: 6,  to: 32},                                   // "be guided by the provisions of section 32"
+  {from: 11, to: 17},                                   // "than those set out in section 17"
+  {from: 13, to: 14},                                   // "Subject to this section and section 14"
+  {from: 16, to: 13},                                   // "if the discharge ... had been made under section 13"
+  {from: 18, to: 19},                                   // "remedies referred to in section 19"
+  {from: 19, to: 18},                                   // "notice served on him or her under section 18"
+  {from: 20, to: 18},
+  {from: 22, to: 21},                                   // "appointed a receiver under section 21"
+  {from: 23, to: 18}, {from: 23, to: 21},               // "period specified in section 18"; "section 21(9)"
+  {from: 24, to: 21}, {from: 24, to: 25}, {from: 24, to: 13}, {from: 24, to: 23},
+  {from: 25, to: 18},                                   // "notice served ... under section 18(3)"
+  {from: 27, to: 26},                                   // "duty imposed by section 26(1)"
+  {from: 29, to: 26},
+  {from: 32, to: 19}, {from: 32, to: 18}, {from: 32, to: 21},
+  {from: 32, to: 22}, {from: 32, to: 23}, {from: 32, to: 25},   // "notice under section 18, 21(2), 22(2), 23(1) or 25(2)"
+  {from: 33, to: 34},                                   // "persons mentioned in section 34"
+  {from: 34, to: 33},
+  {from: 35, to: 33},
+  {from: 37, to: 36},                                   // "time specified under subsection 36(2)"
+  {from: 38, to: 13}, {from: 38, to: 26}, {from: 38, to: 29}
+] AS row
+MATCH (a:Provision {id: 'mortgage-act/s' + row.from}), (b:Provision {id: 'mortgage-act/s' + row.to})
+MERGE (a)-[:REFERENCES]->(b);
+
+// ===========================================================================
+// LINKS BETWEEN LAWS — Mortgage Act citing the Land Act and the RTA
+// ===========================================================================
+
+// Section-to-section
+UNWIND [
+  {from: 'mortgage-act/s1',  to: 'land-act/s86'},                    // "mediator" has the meaning assigned to it by section 86 of the Land Act
+  {from: 'mortgage-act/s4',  to: 'land-act/s40'},                    // "Notwithstanding section 40 of the Land Act"
+  {from: 'mortgage-act/s8',  to: 'registration-of-titles-act/s48'},  // "registered in accordance with section 48 of that Act"
+  {from: 'mortgage-act/s37', to: 'registration-of-titles-act/s70'}   // "the provisions of section 70 of the Registration of Titles Act"
+] AS row
+MATCH (a:Provision {id: row.from}), (b:Provision {id: row.to})
+MERGE (a)-[:REFERENCES]->(b);
+
+// Section-to-whole-Act (no section number given in the citing text)
+UNWIND [
+  {from: 'mortgage-act/s1',  to: 'land-act'},                    // tenure definitions "given to it by the Land Act"; "recorder" appointed under the Land Act
+  {from: 'mortgage-act/s1',  to: 'registration-of-titles-act'},  // "Registrar of Titles" appointed under the RTA
+  {from: 'mortgage-act/s2',  to: 'registration-of-titles-act'},  // 2(6) title "registered under the Registration of Titles Act"; 2(8)(b)(ii)
+  {from: 'mortgage-act/s14', to: 'registration-of-titles-act'},  // "a mortgage registered under the Registration of Titles Act or the Land Act"
+  {from: 'mortgage-act/s14', to: 'land-act'}
+] AS row
+MATCH (a:Provision {id: row.from}), (b:Legislation {id: row.to})
+MERGE (a)-[:REFERENCES]->(b);

@@ -119,6 +119,10 @@ Each relationship is recorded with a comment quoting or citing the words in the 
 - LAA s.7 says acquired land "vests in the Uganda Land Commission". There is no `VESTS_IN`
   relationship, so it is recorded as `EMPOWERS` with the vesting explained in `power`.
 - RTA s.100 (leases) is recorded as `RECOGNISES` leasehold, as well as freehold and mailo.
+- Mortgage Act: "court" (s.1) means any court from a grade I magistrates court upwards, including a
+  land tribunal, so the court's powers (s.32–s.35, relief and review) are not linked to a single
+  `Institution`; they are captured by the `relief-for-mortgagor` concept. A receiver is appointed
+  privately by the mortgagee, so it is a `LegalConcept`, not an `Institution`.
 
 ### 4.5 Writing the Cypher
 
@@ -135,9 +139,9 @@ Every law was checked after loading:
 
 | Check | How | Result |
 |---|---|---|
-| Section count per part = the PDF table of contents | Query 1 below | Land Act 92, RTA 187, LAA 21 — all match |
-| Titles match the PDF | `toc.mjs` output compared with `03_structure.cypher` | All 300 section titles identical |
-| No duplicates after loading twice | Load twice, compare totals | 381 nodes / 464 relationships both times |
+| Section count per part = the PDF table of contents | Query 1 below | Land Act 92, RTA 187, LAA 21, Mortgage Act 42 — all match |
+| Titles match the PDF | `toc.mjs` output compared with `03_structure.cypher` | All 342 section titles identical |
+| No duplicates after loading twice | Load twice, compare totals | 445 nodes / 601 relationships both times |
 | No duplicate ids | Query 2 below | 0 |
 | Facts on `Legislation` nodes | Compared by hand with page 1 of each PDF | ✅ |
 | Change history | Every change went through a pull request on GitHub | ✅ |

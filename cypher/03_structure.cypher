@@ -487,3 +487,90 @@ SET s:Section,
     s.title  = row.title
 MERGE (p)-[r:HAS_PROVISION]->(s)
 SET r.order = row.n;
+
+// ===========================================================================
+// MORTGAGE ACT (Chapter 239) — ULII version as at 31 December 2023
+// Titles exactly as printed in the table of contents.
+// ===========================================================================
+
+// --- Parts -----------------------------------------------------------------
+MATCH (l:Legislation {id: 'mortgage-act'})
+UNWIND [
+  {num: 'I',   order: 1, title: 'Preliminary'},
+  {num: 'II',  order: 2, title: 'General'},
+  {num: 'III', order: 3, title: 'Discharge and release of mortgages'},
+  {num: 'IV',  order: 4, title: 'Covenants, conditions and powers implied in mortgages'},
+  {num: 'V',   order: 5, title: 'Powers of mortgagee'},
+  {num: 'VI',  order: 6, title: 'Powers of court with respect to mortgages'},
+  {num: 'VII', order: 7, title: 'Miscellaneous'}
+] AS row
+MERGE (p:Part {id: 'mortgage-act/part-' + toLower(row.num)})
+SET p.number = row.num, p.title = row.title
+MERGE (l)-[r:HAS_PART]->(p)
+SET r.order = row.order;
+
+// --- Sections --------------------------------------------------------------
+UNWIND [
+  // Part I – Preliminary
+  {n: 1,  part: 'I',   title: 'Interpretation'},
+
+  // Part II – General
+  {n: 2,  part: 'II',  title: 'Power to create mortgages'},
+  {n: 3,  part: 'II',  title: 'Duty to disclose information'},
+  {n: 4,  part: 'II',  title: 'Mortgage of matrimonial home'},
+  {n: 5,  part: 'II',  title: 'Consent to mortgage of matrimonial home'},
+  {n: 6,  part: 'II',  title: 'Application of Act to mortgages on customary land'},
+  {n: 7,  part: 'II',  title: 'Mortgage of land to take effect as security only'},
+  {n: 8,  part: 'II',  title: 'Priority'},
+  {n: 9,  part: 'II',  title: 'Tacking'},
+  {n: 10, part: 'II',  title: 'Consolidation'},
+  {n: 11, part: 'II',  title: 'Variation of mortgage'},
+  {n: 12, part: 'II',  title: 'Suits by mortgagor'},
+
+  // Part III – Discharge and release of mortgages
+  {n: 13, part: 'III', title: 'Right to discharge'},
+  {n: 14, part: 'III', title: 'Release of mortgage'},
+  {n: 15, part: 'III', title: 'Deposit of mortgage money where mortgagee cannot be found'},
+  {n: 16, part: 'III', title: 'Transfer of mortgage'},
+
+  // Part IV – Covenants, conditions and powers implied in mortgages
+  {n: 17, part: 'IV',  title: 'Implied covenants by mortgagor'},
+
+  // Part V – Powers of mortgagee
+  {n: 18, part: 'V',   title: 'Notice on default'},
+  {n: 19, part: 'V',   title: 'Remedies of mortgagee'},
+  {n: 20, part: 'V',   title: 'Mortgagee\'s action for money secured by mortgage'},
+  {n: 21, part: 'V',   title: 'Appointment, powers, remuneration and duties of receiver'},
+  {n: 22, part: 'V',   title: 'Power of mortgagee to lease'},
+  {n: 23, part: 'V',   title: 'Power of mortgagee to take possession of mortgaged land'},
+  {n: 24, part: 'V',   title: 'Withdrawal of mortgagee from possession'},
+  {n: 25, part: 'V',   title: 'Power of sale of mortgagee'},
+  {n: 26, part: 'V',   title: 'Duty of mortgagee exercising power of sale'},
+  {n: 27, part: 'V',   title: 'Powers incidental to power of sale'},
+  {n: 28, part: 'V',   title: 'Protection of purchaser'},
+  {n: 29, part: 'V',   title: 'Sale by mortgagee to himself or herself'},
+  {n: 30, part: 'V',   title: 'Application of proceeds of sale of mortgaged land'},
+  {n: 31, part: 'V',   title: 'Right of mortgagor to discharge mortgage on payment of sums due any time before sale'},
+
+  // Part VI – Powers of court with respect to mortgages
+  {n: 32, part: 'VI',  title: 'Application for relief by mortgagor'},
+  {n: 33, part: 'VI',  title: 'Power of court to review certain mortgages'},
+  {n: 34, part: 'VI',  title: 'Application to court to exercise power under section 33'},
+  {n: 35, part: 'VI',  title: 'Exercise of power under section 33 to review certain mortgages'},
+  {n: 36, part: 'VI',  title: 'Extinction of certain rights'},
+  {n: 37, part: 'VI',  title: 'Registrar of Titles may issue special certificate of title to mortgagor'},
+
+  // Part VII – Miscellaneous
+  {n: 38, part: 'VII', title: 'Offences and penalties'},
+  {n: 39, part: 'VII', title: 'Short form of covenant by mortgagor to insure'},
+  {n: 40, part: 'VII', title: 'Regulations'},
+  {n: 41, part: 'VII', title: 'Power to amend Schedule 1'},
+  {n: 42, part: 'VII', title: 'Application of common law and doctrines of equity'}
+] AS row
+MATCH (p:Part {id: 'mortgage-act/part-' + toLower(row.part)})
+MERGE (s:Provision {id: 'mortgage-act/s' + row.n})
+SET s:Section,
+    s.number = toString(row.n),
+    s.title  = row.title
+MERGE (p)-[r:HAS_PROVISION]->(s)
+SET r.order = row.n;

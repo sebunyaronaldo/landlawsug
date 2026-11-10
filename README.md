@@ -34,7 +34,7 @@ The four laws most directly about land ownership and rights:
 
 | Legislation | Status |
 |---|---|
-| Mortgage Act | ❌ |
+| Mortgage Act (Chapter 239) | ✅ |
 | Physical Planning Act | ❌ |
 | Condominium Property Act | ❌ |
 | Survey Act | ❌ |
@@ -52,11 +52,11 @@ Granularity: **Legislation → Part → Provision (section / article)**. See [do
 
 | Nodes | Count | | Relationships | Count |
 |---|---|---|---|---|
-| Legislation | 9 (4 core laws + 5 amending Acts) | | HAS_PART / HAS_PROVISION | 26 / 310 |
-| Part | 26 | | REFERENCES | 39 |
-| Provision (sections + articles) | 310 | | EMPOWERS | 25 |
-| Institution | 16 | | DEFINES | 22 |
-| LegalConcept | 16 | | RECOGNISES / ESTABLISHES | 15 / 13 |
+| Legislation | 9 (5 laws loaded in full + 4 amending Acts) | | HAS_PART / HAS_PROVISION | 33 / 352 |
+| Part | 33 | | REFERENCES | 80 |
+| Provision (sections + articles) | 352 | | EMPOWERS | 39 |
+| Institution | 17 | | DEFINES | 46 |
+| LegalConcept | 30 | | RECOGNISES / ESTABLISHES | 24 / 13 |
 | TenureType | 4 | | AMENDS / ACCOUNTABLE_TO / APPEALS_TO | 7 / 4 / 3 |
 
 ## Quick start
